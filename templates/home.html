@@ -1,0 +1,709 @@
+  {% load static %}
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Raven Entertainment</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+
+
+    <link href="{% static 'assets\img\favicon.png' %}" rel="icon">
+    <link href="{% static 'assets\img\apple-touch-icon.png' %}" rel="apple-touch-icon">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets\vendor\bootstrap\css\bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets\vendor\bootstrap-icons\bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets\vendor\aos\aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets\vendor\swiper\swiper-bundle.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets\vendor\glightbox\css\glightbox.min.css' %}" rel="stylesheet">
+    
+    <!-- Main CSS File -->
+    <link href="{% static 'assets\css\main.css' %}" rel="stylesheet">
+    
+
+  </head>
+
+  <body class="index-page">
+
+    <header id="header" class="header fixed-top">
+
+      <div class="topbar d-flex align-items-center">
+        <div class="container d-flex justify-content-center justify-content-md-between">
+          <div class="contact-info d-flex align-items-center">
+            <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:raven.entertainments@gmail.com">raven.entertainments@gmail.com</a></i>
+            <i class="bi bi-phone d-flex align-items-center ms-4"><span>9156235305</span></i>
+          </div>
+          <div class="social-links d-none d-md-flex align-items-center">
+            
+            <a href="https://www.instagram.com/raven.entertainment" class="instagram"><i class="bi bi-instagram"></i>&nbsp;Instagram</a>
+            
+          </div>
+        </div>
+      </div><!-- End Top Bar -->
+
+      <div class="branding d-flex align-items-center">
+
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+          <a href="/" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <img src="{% static 'assets\img\RAVEN laser.png' %}" alt="">
+            <h1 class="sitename">Raven Entertainment</h1>
+          </a>
+
+
+          <nav id="navmenu" class="navmenu">
+            <ul>
+              <li><a href="#hero">Home</a></li>
+              <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#event">Event</a></li>
+          <li><a href="#team">Team</a></li>          
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'signup' %}">Sign Up</a></li>
+          <li><a href="#contact">Contact</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </nav>
+          
+        </div>
+
+      </div>
+
+    </header>
+
+    <main class="main">
+
+      <!-- Hero Section -->
+      <section id="hero" class="hero section dark-background">
+
+        <div class="slider">
+          <div class="slide" style="background-image: url('{% static "assets\img\bck10.jpg" %}');"></div>
+          <div class="slide" style="background-image: url('{% static "assets\img\a1k.png" %}');"></div>
+          <div class="slide" style="background-image: url('{% static "assets/img/slide3.jpg" %}');"></div>
+      </div>
+      
+      <!-- Navigation Buttons 
+      <div class="slider-nav">
+        <button id="prev">&lt;</button>  Displays as "<" 
+        <button id="next">&gt;</button>  Displays as ">"       
+      </div> -->
+      <!--<img src="{% static 'assets\img\bck10.jpg' %}" alt="" data-aos="fade-in">-->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+  <div class="row justify-content-center text-center">
+    <div class="col-lg-8">
+      <h2>Welcome to Raven</h2>
+      <p>Pune Based Theatre Group 🎭✨</p>
+      <a href="#about" class="btn-get-started mt-3">Get Started</a>
+    </div>
+  </div>
+</div>
+
+
+      </section><!-- /Hero Section -->
+
+      <!-- About Section -->
+      <section id="about" class="about section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+          <span>About Us<br></span>
+          <h2>About Us<br></h2>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+          <div class="row gy-4">
+
+            <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="100">
+              <img src="{% static 'assets\img\jjv.JPG' %}" class="img-fluid" alt="">
+            </div>
+
+           <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
+            <h3 style="font-size: 1.8em; color: #FFD700; margin-bottom: 10px; padding-bottom: 5px;">Intro</h3>
+            <p class="fst-italic" style="font-style: italic; line-height: 1.6; color: #ffffff; margin-bottom: 20px; font-size: 1.1em; padding: 10px; background-color: #444444;">
+              Theatre by definition is for an audience; the purpose is to co-exist in a space shared between maker and audience. We try our best to give them a remarkable experience while and after watching our plays.
+              We equally put in our efforts into developing characters, relatable stories, language, music, and spectacle. As these elements have formed the backbone of our successful plays.
+            </p>
+
+            <h3 style="font-size: 1.8em; color: #FFD700; margin-bottom: 10px; padding-bottom: 5px;">Our Planning</h3>
+            <p class="fst-italic" style="font-style: italic; line-height: 1.6; color: #ffffff; margin-bottom: 20px; font-size: 1.1em; padding: 10px; background-color: #444444;">
+              We are trying to spread our reach and achieve a stage where we can conduct shows, participate in various state and national level competitions, perform at well-known theatre festivals, and also to easily give a chance to many performers and artists to showcase their passion for art.
+            </p>
+          </div>
+
+          
+          
+
+          </div>
+
+        </div>
+
+      </section><!-- /About Section -->
+
+      <section id="cards" class="cards section">
+
+        <div class="container">
+    
+            <div class="row no-gutters">
+    
+                <div class="col-lg-6 col-md-6 card" data-aos="fade-up" data-aos-delay="100">
+                  <img src="{% static 'assets\img\a1k.png' %}">
+   
+                    <h4>Asahi Ek Kalavant</h4>
+                    <ul>
+                        <li>Late Ram Ganesh Gadkari Trophy - Best One-Act Play 2023 (Joint First)</li>
+                        <li>Late Anant Kubal State-Level One-Act Play Competition, Nashik - Second Best One-Act Play</li>
+                        <li>Bharat Trophy 2022 - Third Place (Joint Award)</li>
+                        <li>Chalikaka Trophy 2022 - Special Recognition Award</li>
+                        <li>Jayant Trophy 2023 - Encouragement Award for One-Act Play (Joint Award)</li>
+                        <li>Ratnakar Trophy 2022 - Most Captivating One-Act Play
+                        <li>Individual Awards - 25 Distinct Achievements</li>
+                        </li>
+                    </ul>
+                  
+                </div><!-- End Card Item -->
+    
+                <div class="col-lg-6 col-md-6 card" data-aos="fade-up" data-aos-delay="200">
+                  <img src="{% static 'assets\img\jjvPoster.png' %}">
+                 
+                    <h4>Jo Je Vanshil</h4>
+                    <ul>
+                        <li>The most rennowned Horror Play</li>
+                        <li>Best Supporting Actress - Dajikaka Karandak and Ahmednagar Mahakarandak</li>
+                        <li>Best Set Design - Dajikaka Karandak and Ahmednagar Mahakarandak</li>
+                        <li>Best Lighting - Dajikaka Karandak and Ahmednagar Mahakarandak</li>
+                        <li>Best Sound - Dajikaka Karandak and Ahmednagar Mahakarandak</li>
+                    </ul>
+                  
+                </div><!-- End Card Item -->
+
+                <div class="col-lg-6 col-md-6 card" data-aos="fade-up" data-aos-delay="300" >
+                  <img src="{% static 'assets\img\hello_inspector\Hello_Inspector_poster.jpg' %}">  
+                  <h4>Hello Inspector</h4>
+                    <ul>
+                        <li>Vinodottam Karandak 2023 - Best One-Act Play, Writing, Direction, and Lighting First Prize.</li>
+                        <li>Kalarasik Karandak 2023 - Best Comedy One-Act Play.</li>
+                        <li>Participation in All India Centenary Theatre Festival 2024.</li>
+                        <li>Ahmednagar Mahakarandak 2024 - Best Comedy One-Act Play and First and Second Prizes for Comic Actors.</li>
+                        <li>Pune NatyaSattak Festival 2024.</li>
+                        <li>Sawai 2023 Audience Choice Award-winning One-Act Play.</li>
+                    </ul>
+                </div><!-- End Card Item -->
+    
+                
+    
+            </div>
+    
+        </div>
+    
+    </section><!-- /Cards Section -->
+    
+      <!-- Clients Section -->
+      <section id="clients" class="clients section light-background">
+
+        <div class="container">
+
+          <div class="swiper init-swiper">
+            <script type="application/json" class="swiper-config">
+              {
+                "loop": true,
+                "speed": 600,
+                "autoplay": {
+                  "delay": 5000
+                },
+                "slidesPerView": "auto",
+                "pagination": {
+                  "el": ".swiper-pagination",
+                  "type": "bullets",
+                  "clickable": true
+                },
+                "breakpoints": {
+                  "320": {
+                    "slidesPerView": 2,
+                    "spaceBetween": 40
+                  },
+                  "480": {
+                    "slidesPerView": 3,
+                    "spaceBetween": 60
+                  },
+                  "640": {
+                    "slidesPerView": 4,
+                    "spaceBetween": 80
+                  },
+                  "992": {
+                    "slidesPerView": 6,
+                    "spaceBetween": 120
+                  }
+                }
+              }
+            </script>
+
+
+  <div class="swiper-wrapper align-items-center">
+      <div class="swiper-slide">
+          <img src="{% static 'assets\img\clients\client-1.png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="swiper-slide">
+          <img src="{% static 'assets\img\clients\client-2.png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="swiper-slide">
+          <img src="{% static 'assets\img\clients\client-3.png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="swiper-slide">
+          <img src="{% static 'assets\img\clients\client-4.png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="swiper-slide">
+          <img src="{% static 'assets\img\clients\client-5.png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="swiper-slide">
+          <img src="{% static 'assets\img\clients\client-6.png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="swiper-slide">
+          <img src="{% static 'assets\img\clients\client-7.png' %}" class="img-fluid" alt="">
+      </div>
+      <div class="swiper-slide">
+          <img src="{% static 'assets\img\clients\client-8.png' %}" class="img-fluid" alt="">
+      </div>
+  </div>
+
+          </div>
+
+        </div>
+
+      </section><!-- /Clients Section -->
+
+      <!-- Services Section -->
+      <section id="services" class="services section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <span>Services</span>
+            <h2>Services</h2>
+            <p>WHAT CAN WE PROVIDE ?</p>
+        </div><!-- End Section Title -->
+    
+        <div class="container">
+    
+            <div class="row gy-4">
+    
+                <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-activity"></i>
+                        </div>
+                        <a href="#" class="stretched-link">
+                            <h3>Digital Advertisement</h3>47d
+                        </a>
+                        <p>Digital Posters, Motion Posters, Trailers everything would contain your brand logos as Sponsors Our team consists of around 30-40 People through which your promotion would be done.</p>
+                    </div>
+                </div><!-- End Service Item -->
+    
+                <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-broadcast"></i>
+                        </div>
+                        <a href="#" class="stretched-link">
+                            <h3>Projection of Advertisement</h3>
+                        </a>
+                        <p>Showcasing your Advertisements or Promotional videos during the Gap between 2 Plays or Vocal announcement at the End of the show.</p>
+                    </div>
+                </div><!-- End Service Item -->
+    
+                <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-easel"></i>
+                        </div>
+                        <a href="#" class="stretched-link">
+                            <h3>Publicity</h3>
+                        </a>
+                        <p>When we'll Promote our Posters at Hotspot areas in the City we'll Print your logo on every Poster for your Publicity.</p>
+                    </div>
+                </div><!-- End Service Item -->
+    
+                <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-item position-relative">
+                        <div class="icon">
+                            <i class="bi bi-bounding-box-circles"></i>
+                        </div>
+                        <a href="#" class="stretched-link">
+                            <h3>Standees And Coupons</h3>
+                        </a>
+                        <p>You can add a brief description for offers on your Brand with attached coupons with the Tickets Also if you can provide Standees for your Advertisement we'll properly place them in the Auditorium at the Entrance.</p>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div><!-- End Service Item -->
+            </div>
+    
+        </div>
+    
+    </section><!-- /Services Section -->
+    
+
+      <!-- Call To Action Section -->
+      <section id="call-to-action" class="call-to-action section dark-background">
+
+      <img src="{% static 'assets\img\hello.jpg' %}" alt="">
+
+
+        <div class="container">
+          <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+            <div class="col-xl-10">
+              <div class="text-center">
+                <h3>Our Workshops</h3>
+                <p></p>
+                <a class="cta-btn" href="#">Click for more Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section><!-- /Call To Action Section -->
+
+      <!-- event Section -->
+      <section id="event" class="event section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <span>Events</span>
+      <h2>Events</h2>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+      <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+        <ul class="event-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+          <li data-filter="*" class="filter-active">All</li>
+          <li data-filter=".filter-past">Past Events</li>
+          <li data-filter=".filter-ongoing">Ongoing Events</li>
+        </ul><!-- End Filters -->
+
+        <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+          {% for show in shows %}
+          <div class="col-lg-4 col-md-6 event-item isotope-item 
+              {% if show.date > today %} filter-ongoing 
+              {% else %} filter-past 
+              {% endif %}">
+              <a href="{% url 'show_detail' slug=show.slug %}">
+                {% if show.thumbnail %}
+                  <img src="{{ show.thumbnail.url }}" class="img-fluid" alt="{{ show.name }}">
+                {% else %}
+                  <img src="{% static 'assets/img/default_thumbnail.jpg' %}" class="img-fluid" alt="No Thumbnail">
+                {% endif %}
+              </a>            
+            <div class="event-info">
+              <h4>{{ show.name }}</h4>
+              <p>{{ show.description|truncatechars:100 }}</p>
+              <a href="{  }" title="{{ show.name }}" data-gallery="event-gallery" class="glightbox preview-link">
+                <i class="bi bi-zoom-in"></i>
+              </a>
+              <a href="{% url 'show_detail' slug=show.slug %}" title="More Details" class="details-link">
+                <i class="bi bi-link-45deg"></i>
+            </a>          
+            </div>
+          </div>
+          {% empty %}
+          <p class="text-muted">No events to show right now.</p>
+          {% endfor %}
+        </div><!-- End Grid -->
+      </div>
+    </div>
+  </section><!-- /event Section -->
+
+      <!-- Pricing Section 
+      <section id="pricing" class="pricing section">
+
+        
+        <div class="container section-title" data-aos="fade-up">
+          <span>Pricing</span>
+          <h2>Pricing</h2>
+          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        </div>
+
+        <div class="container">
+
+          <div class="row g-4 g-lg-0">
+
+            <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+              <div class="pricing-item">
+                <h3>Free Plan</h3>
+                <h4><sup>$</sup>0<span> / month</span></h4>
+                <ul>
+                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
+                  <li class="na"><i class="bi bi-x"></i> <span>Pharetra massa massa ultricies</span></li>
+                  <li class="na"><i class="bi bi-x"></i> <span>Massa ultricies mi quis hendrerit</span></li>
+                </ul>
+                <div class="text-center"><a href="#" class="buy-btn">Buy Now</a></div>
+              </div>
+            </div>
+            <div class="col-lg-4 featured" data-aos="zoom-in" data-aos-delay="200">
+              <div class="pricing-item">
+                <h3>Business Plan</h3>
+                <h4><sup>$</sup>29<span> / month</span></h4>
+                <ul>
+                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
+                  <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
+                  <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
+                </ul>
+                <div class="text-center"><a href="#" class="buy-btn">Buy Now</a></div>
+              </div>
+            </div>
+
+            <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+              <div class="pricing-item">
+                <h3>Developer Plan</h3>
+                <h4><sup>$</sup>49<span> / month</span></h4>
+                <ul>
+                  <li><i class="bi bi-check"></i> <span>Quam adipiscing vitae proin</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nec feugiat nisl pretium</span></li>
+                  <li><i class="bi bi-check"></i> <span>Nulla at volutpat diam uteera</span></li>
+                  <li><i class="bi bi-check"></i> <span>Pharetra massa massa ultricies</span></li>
+                  <li><i class="bi bi-check"></i> <span>Massa ultricies mi quis hendrerit</span></li>
+                </ul>
+                <div class="text-center"><a href="#" class="buy-btn">Buy Now</a></div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>/Pricing Section -->
+
+      <!-- Team Section -->
+      <section id="team" class="team section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+          <span>Team</span>
+          <h2>Team</h2>
+          <p></p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+
+          <div class="row">
+
+            <div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
+              <div class="member">
+                <img src="{% static 'assets\img\team\Rupesh_1.jpg' %}" class="img-fluid" alt="">
+                <div class="member-content">
+                  <h4>Rupesh Ahire</h4>
+                  <span>Founder</span>
+                  <p>
+                  Writer and Director of various plays since last 6-7 years, with consistent results while exploring different genres of storytelling. His vision is to express unique and unexplored styles in theatre.
+                  </p>
+                  <div class="social">
+                    <!--<a href=""><i class="bi bi-twitter-x"></i></a>-->
+                    <a href="https://www.facebook.com/rupesh.ahire.397"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.instagram.com/rupesh_ahire/"><i class="bi bi-instagram"></i></a>
+                    <!--<a href=""><i class="bi bi-linkedin"></i></a>-->
+                  </div>
+                </div>
+              </div>
+            </div><!-- End Team Member -->
+
+            <!--<div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
+              <div class="member">
+                <img src="{% static 'assets\img\team\team-2.jpg' %}" class="img-fluid" alt="">
+                <div class="member-content">
+                  <h4>Sarah Jhinson</h4>
+                  <span>Marketing</span>
+                  <p>
+                    Repellat fugiat adipisci nemo illum nesciunt voluptas repellendus. In architecto rerum rerum temporibus
+                  </p>
+                  <div class="social">
+                    <a href=""><i class="bi bi-twitter-x"></i></a>
+                    <a href=""><i class="bi bi-facebook"></i></a>
+                    <a href=""><i class="bi bi-instagram"></i></a>
+                    <a href=""><i class="bi bi-linkedin"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>--><!-- End Team Member -->
+
+            <!--<div class="col-lg-4 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
+              <div class="member">
+                <img src="{% static 'assets\img\team\team-3.jpg' %}" class="img-fluid" alt="">
+                <div class="member-content">
+                  <h4>William Anderson</h4>
+                  <span>Content</span>
+                  <p>
+                    Voluptas necessitatibus occaecati quia. Earum totam consequuntur qui porro et laborum toro des clara
+                  </p>
+                  <div class="social">
+                    <a href=""><i class="bi bi-twitter-x"></i></a>
+                    <a href=""><i class="bi bi-facebook"></i></a>
+                    <a href=""><i class="bi bi-instagram"></i></a>
+                    <a href=""><i class="bi bi-linkedin"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>--><!-- End Team Member -->
+
+          </div>
+
+        </div>
+
+      </section><!-- /Team Section -->
+
+      <!-- Contact Section -->
+      <section id="contact" class="contact section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+          <span>Contact</span>
+          <h2>Contact</h2>
+          <p></p>
+        </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+          <div class="row gy-4">
+
+            <div class="col-lg-6">
+              <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="https://maps.app.goo.gl/gKg6eCsgCJnXjRix9?g_st=aw" target="_blank">
+                <i class="bi bi-geo-alt"></i>
+                </a>
+
+                <h3>Address</h3>
+                <p>GQ4X+2FQ, DP Rd, Kanifnath Housing Society, Chintamani Paradise, Kothrud, Pune, Maharashtra 411038</p>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="col-lg-3 col-md-6">
+              <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+                <i class="bi bi-telephone"></i>
+                <h3>Call Us</h3>
+                <p>9156235305</p>
+              </div>
+            </div><!-- End Info Item -->
+
+            <div class="col-lg-3 col-md-6">
+              <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
+                <i class="bi bi-envelope"></i>
+                <h3>Email Us</h3>
+                <p>raven.entertainments@gmail.com</p>
+              </div>
+            </div><!-- End Info Item -->
+
+          </div>
+
+          
+
+          </div>
+
+        </div>
+
+      </section><!-- /Contact Section -->
+
+    </main>
+
+    <footer id="footer" class="footer position-relative dark-background">
+
+      <div class="container footer-top">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-about">
+              <a href="" class="logo sitename">Raven Entertainment</a>
+              <div class="footer-contact pt-3">
+                <p></p>
+                <p></p>
+                <p class="mt-3"><strong>Phone:</strong> <span>9156235305</span></p>
+                <p><strong>Email:</strong> <span>raven.entertainments@gmail.com</span></p>
+              </div>
+              <div class="social-links d-flex mt-4">
+                
+                <a href="www.instagram.com/raven.entertainment"><i class="bi bi-instagram"></i></a>
+                
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><a href="#hero">Home</a></li>
+              <li><a href="#about">About us</a></li>
+              <li><a href="#service">Services</a></li>
+              <li><a href="#">Terms of service</a></li>
+              <li><a href="#">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><a href="#">Digital Advertisement</a></li>
+              <li><a href="#">Projection of Advertisement</a></li>
+              <li><a href="#">Publicity</a></li>
+              <li><a href="#">Standees and Coupons</a></li>
+            </ul>
+          </div>
+
+          <!--<div class="col-lg-4 col-md-12 footer-newsletter">
+            <h4>Our Newsletter</h4>
+            <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
+            <form action="forms/newsletter.php" method="post" class="php-email-form">
+              <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your subscription request has been sent. Thank you!</div>
+            </form>
+          </div>-->
+
+        </div>
+      </div>
+
+      <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Raven Entertainment</strong> <span>All Rights Reserved</span></p>
+        <div class="credits">  
+          <!-- You can delete the links only if you've purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+          <!--Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> -->
+        </div>
+      </div>
+
+    </footer>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  <script src="{% static 'assets/js/slider.js' %}"></script>
+
+
+  </body>
+
+  </html>

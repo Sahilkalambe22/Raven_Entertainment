@@ -1,0 +1,96 @@
+<h2>📍 QR Scan Analytics</h2>
+
+<!-- Table -->
+<table class="table-dark-custom">
+    <thead>
+        <tr>
+            <th>Show</th>
+            <th>Tickets Booked</th>
+            <th>Tickets Scanned</th>
+            <th>Attendance (%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in scan_data %}
+            <tr>
+                <td>{{ row.show__name }}</td>
+                <td>{{ row.total_booked }}</td>
+                <td>{{ row.total_scanned }}</td>
+                <td>
+                    {% if row.total_booked > 0 %}
+                        {{ row.attendance_percentage }}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr class="my-4">
+
+<!-- Dropdown + Chart -->
+<div class="text-center my-4">
+  <label for="showSelector" class="fw-bold text-light">📊 Select Show for Chart:</label>
+  <select id="showSelector" class="form-select w-50 mx-auto">
+    <option value="">-- Select a Show --</option>
+    {% for row in scan_data %}
+      <option value="{{ row.show__name }}"
+              data-booked="{{ row.total_booked }}"
+              data-scanned="{{ row.total_scanned }}">
+        {{ row.show__name }}
+      </option>
+    {% endfor %}
+  </select>
+</div>
+
+<!-- Chart Canvas -->
+<div class="chart-container" style="margin-top: 30px; text-align:center;">
+    <canvas id="qrAnalyticsChart" width="600" height="300"></canvas>
+</div>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const scanData = {{ scan_data_json|safe }};
+    const ctx = document.getElementById('qrAnalyticsChart').getContext('2d');
+
+    let qrChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [
+                { label: 'Tickets Booked', data: [], backgroundColor: '#007bff' },
+                { label: 'Tickets Scanned', data: [], backgroundColor: '#28a745' }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'QR Scan Analytics Chart' }
+            }
+        }
+    });
+
+    function updateChart(showName) {
+        const show = scanData.find(s => s.show__name === showName);
+        if (!show) return;
+        qrChart.data.labels = [show.show__name];
+        qrChart.data.datasets[0].data = [show.total_booked];
+        qrChart.data.datasets[1].data = [show.total_scanned];
+        qrChart.update();
+    }
+
+    document.getElementById("showSelector").addEventListener("change", function() {
+        updateChart(this.value);
+    });
+
+    // auto-load first show
+    if (scanData.length > 0) {
+        document.getElementById("showSelector").value = scanData[0].show__name;
+        updateChart(scanData[0].show__name);
+    }
+</script>

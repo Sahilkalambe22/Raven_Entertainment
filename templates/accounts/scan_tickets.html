@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan Tickets</title>
+    <link rel="stylesheet" href="{% static 'assets/css/admin_dashboard.css' %}">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .scanner-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 10px #000;
+        }
+
+        h2 {
+            font-weight: bold;
+            border-bottom: 2px solid #aa0000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .feedback {
+            margin: 20px 0;
+            font-size: 16px;
+            color: #00e676;
+        }
+
+        .error {
+            color: #ff5252;
+        }
+
+        .ticket-info {
+            margin-top: 15px;
+            background-color: #2a2a2a;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="scanner-container">
+    <h2>Scan Tickets</h2>
+    <h4>{{ show.name }}</h4>
+    <p>{{ show.date }}</p>
+
+    {% if message %}
+        <div class="feedback {% if '❌' in message or '⚠️' in message %}error{% endif %}">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <div id="reader" style="width: 300px; margin: 20px auto;"></div>
+
+    {% if ticket %}
+        <div class="ticket-info">
+            <p><strong>Seat:</strong> {{ ticket.seat_number }}</p>
+            <p><strong>Status:</strong> {% if ticket.is_scanned %}✔ Already Scanned{% else %}Pending{% endif %}</p>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Hidden auto-submit form for QR logic -->
+<form id="hidden-form" method="POST" style="display:none;">
+    {% csrf_token %}
+    <input type="hidden" name="ticket_id" id="ticket_id_field">
+</form>
+
+<script>
+    function onScanSuccess(decodedText) {
+        document.getElementById("ticket_id_field").value = decodedText;
+        document.getElementById("hidden-form").submit();
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+    Html5Qrcode.getCameras().then(devices => {
+        if (devices && devices.length) {
+            const cameraId = devices[0].id;
+            html5QrCode.start(cameraId, {
+                fps: 10,
+                qrbox: { width: 250, height: 250 }
+            }, onScanSuccess);
+        }
+    }).catch(err => {
+        document.getElementById("reader").innerText = "⚠️ Unable to access camera: " + err;
+    });
+</script>
+
+</body>
+</html>

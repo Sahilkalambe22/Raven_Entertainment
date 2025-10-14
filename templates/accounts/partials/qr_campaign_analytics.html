@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Campaign Analytics</title>
+  <script src="{% static 'assets/js/qr_campaign_analytics.js' %}"></script>
+
+
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #121212;
+      color: #f5f5f5;
+    }
+
+    .btn-outline-success,
+    .btn-outline-danger {
+      font-weight: bold;
+    }
+
+    canvas {
+      background-color: #1a1a1a;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .form-control {
+      background-color: #1a1a1a;
+      color: #f5f5f5;
+      border: 1px solid #444;
+    }
+
+    .form-control::placeholder {
+      color: #aaa;
+    }
+
+    .btn-warning {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h2 class="text-center mb-4 text-warning">📌 QR Campaign Analytics</h2>
+
+  <div class="row mb-4">
+    <div class="col-md-3 mb-2">
+      <input type="date" class="form-control" id="startDate" />
+    </div>
+    <div class="col-md-3 mb-2">
+      <input type="date" class="form-control" id="endDate" />
+    </div>
+    <div class="col-md-3 mb-2">
+      <input type="text" class="form-control" id="city" placeholder="Enter City" />
+    </div>
+    <div class="col-md-3 mb-2">
+      <button class="btn btn-warning w-100" id="qrCampaignFilterBtn">Apply Filters</button>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end mb-4">
+    <button class="btn btn-outline-success me-2" id="downloadCSV">⬇️ Download CSV</button>
+    <button class="btn btn-outline-danger" id="downloadPDF">⬇️ Download PDF</button>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <canvas id="qrCampaignBarChart" height="300"></canvas>
+    </div>
+    <div class="col-md-6 mb-4">
+      <canvas id="qrCampaignPieChart" height="300"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+

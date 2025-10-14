@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .signup-section {
+        min-height: 85vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .signup-container {
+        max-width: 420px;
+        background-color: #1e1e1e;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+
+    .signup-container h3 {
+        text-align: center;
+        color: #ffcc00;
+        margin-bottom: 25px;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"] {
+        background-color: #2a2a2a;
+        color: #fff;
+        border: 1px solid #555;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 15px;
+        border-radius: 5px;
+    }
+
+    form input:focus {
+        border-color: #ffcc00;
+        outline: none;
+        box-shadow: 0 0 8px #ffcc00;
+    }
+
+    .errorlist {
+        color: #ff4c4c;
+        margin-bottom: 10px;
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .helptext {
+        font-size: 0.85rem;
+        color: #bbbbbb;
+        margin-bottom: 10px;
+    }
+
+    button[type="submit"] {
+        background-color: #ffcc00;
+        color: #121212;
+        border: none;
+        padding: 10px 25px;
+        font-weight: bold;
+        width: 100%;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #ffaa00;
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .login-link a {
+        color: #ffcc00;
+        text-decoration: none;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="signup-section">
+  <div class="signup-container">
+    <form method="POST" action="{% url 'signup' %}">
+      {% csrf_token %}
+      <h3>Create Your Account</h3>
+      {{ form.as_p }}
+
+      <button type="submit">Signup</button>
+
+      {% if messages %}
+      <ul class="errorlist">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </form>
+
+    <div class="login-link">
+      <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

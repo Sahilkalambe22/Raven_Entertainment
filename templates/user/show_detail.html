@@ -1,0 +1,161 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #0f0f0f;
+        color: #fff;
+    }
+
+    .show-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        align-items: flex-start;
+        margin-top: 60px;
+        padding: 20px;
+        background-color: #1a1a1a;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    }
+
+    .show-header img {
+        width: 100%;
+        max-width: 350px;
+        border-radius: 10px;
+    }
+
+    .show-info {
+        flex: 1;
+    }
+
+    .show-info h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #f5c518;
+    }
+
+    .show-info .details p {
+        margin: 6px 0;
+        font-size: 1.05rem;
+    }
+
+    .book-ticket {
+        margin-top: 25px;
+    }
+
+    .book-ticket a {
+        background-color: #f5c518;
+        color: #000;
+        padding: 12px 30px;
+        border-radius: 6px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .book-ticket a:hover {
+        background-color: #e4b814;
+    }
+
+    .media-section {
+        margin-top: 50px;
+    }
+
+    .media-section h2 {
+        font-size: 1.8rem;
+        color: #f5c518;
+        margin-bottom: 20px;
+    }
+
+    .media-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .media-gallery img,
+    .media-gallery video {
+        max-width: 100%;
+        border-radius: 8px;
+        background: #111;
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+    }
+
+    .media-description {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: #bbb;
+    }
+
+</style>
+
+<div class="container">
+    <div class="show-header">
+        <div>
+            {% if show.thumbnail %}
+                <img src="{{ show.thumbnail.url }}" class="img-fluid" alt="{{ show.name }}">
+            {% else %}
+                <img src="{% static 'assets/img/default_thumbnail.jpg' %}" class="img-fluid" alt="No Thumbnail">
+            {% endif %}
+        </div>
+        <div class="show-info">
+            <h1>{{ show.name }}</h1>
+            <div class="details">
+                <p><strong>Date:</strong> {{ show.date }}</p>
+                <p><strong>Time:</strong> {{ show.time }}</p>
+                <p><strong>Price per Seat:</strong> ₹{{ show.seat_price }}</p>
+                <p><strong>Total Seats:</strong> {{ show.total_seats }}</p>
+                <p><strong>Description:</strong> {{ show.description }}</p>
+            </div>
+            <div class="book-ticket">
+                <a href="{% url 'book_ticket' show.id %}" class="btn btn-warning px-4 py-2">
+                    🎟️ Book Tickets
+                </a>                
+            </div>
+        </div>
+    </div>
+
+    <div class="media-section">
+        <h2>🎬 Show Media</h2>
+        <div class="media-gallery">
+            {% for media in show.media_files.all %}
+                <div style="max-width: 350px;">
+                    {% with media.file.name|lower as file_name %}
+                        {% if ".mp4" in file_name %}
+                            <video controls>
+                                <source src="{{ media.file.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        {% else %}
+                            <img src="{{ media.file.url }}" alt="Media for {{ show.name }}">
+                        {% endif %}
+                    {% endwith %}
+                    <p class="media-description">{{ media.description }}</p>
+                </div>
+            {% empty %}
+            {% if show.media_files.all %}
+            <div class="mt-4">
+              <h5 class="mb-3">📸 Uploaded Media</h5>
+              <div class="row">
+                {% for media in show.media_files.all %}
+                  <div class="col-md-4 mb-3">
+                    <a href="{{ media.file.url }}" target="_blank">
+                      <img src="{{ media.file.url }}" class="img-fluid rounded shadow" alt="Media" />
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <p class="text-muted">No media uploaded yet for this show.</p>
+          {% endif %}
+          
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

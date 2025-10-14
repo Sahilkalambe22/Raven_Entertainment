@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="main-content">
+  <h2>👤 Registered Users</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered text-start">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>User Type</th>
+          <th>Date Joined</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.user_type }}</td>
+          <td>{{ user.date_joined }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">No users found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

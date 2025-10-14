@@ -1,0 +1,151 @@
+{% extends "accounts/admin_dashboard.html" %}
+{% block content %}
+
+<style>
+  .dark-container {
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 10px;
+    color: #f5f5f5;
+    min-height: 100vh;
+  }
+
+  .dark-container h2 {
+    color: #ffcc00;
+  }
+
+  .dark-container h4 {
+    color: #ffaa00;
+    margin-top: 30px;
+  }
+
+  .form-control,
+  textarea,
+  input[type="text"],
+  input[type="file"] {
+    background-color: #2a2a2a;
+    color: white;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    padding: 8px;
+    width: 100%;
+  }
+
+  .btn-primary {
+    background-color: #00aa00;
+    border: none;
+    padding: 8px 15px;
+    font-weight: bold;
+  }
+
+  .btn-primary:hover {
+    background-color: #00cc00;
+  }
+
+  .btn-danger {
+    background-color: #aa0000;
+    border: none;
+  }
+
+  .btn-danger:hover {
+    background-color: #cc0000;
+  }
+
+  .table {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    border: 1px solid #333333;
+  }
+
+  .table thead th {
+  background-color: #2a2a2a !important;
+  color: #f5f5f5 !important;
+  font-weight: bold;
+  border-bottom: 1px solid #555555;
+}
+
+
+  .table td,
+  .table th {
+    border: 1px solid #444444;
+  }
+
+  hr {
+    border-top: 1px solid #444444;
+  }
+
+  .media-preview {
+    max-height: 200px;
+    border-radius: 5px;
+    border: 1px solid #333333;
+    margin-bottom: 10px;
+  }
+
+  .text-muted {
+  color: #aaaaaa !important;
+}
+</style>
+
+<div class="dark-container">
+  <h2>🎬 {{ show.name }} ({{ show.date }} at {{ show.time }})</h2>
+
+  <!-- Upload Media -->
+  <hr>
+  <h4>📤 Upload Media</h4>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary mt-2">Upload</button>
+    </div>
+  </form>
+
+  <!-- Existing Media -->
+  <hr>
+  <h4>🗂 Existing Media</h4>
+  <div class="row">
+    {% for media in media_files %}
+      <div class="col-md-4 mb-4">
+        {% if media.file.url|lower|slice:"-4" == ".jpg" or media.file.url|lower|slice:"-4" == ".png" %}
+          <img src="{{ media.file.url }}" class="media-preview img-fluid" alt="media">
+        {% else %}
+          <a href="{{ media.file.url }}" class="text-info" target="_blank">📎 Download/View File</a>
+        {% endif %}
+        <p style="color: #ccc;">{{ media.description }}</p>
+        <a href="{% url 'delete_media' media.id %}" class="btn btn-sm btn-danger">🗑 Delete</a>
+      </div>
+    {% empty %}
+      <p class="text-muted">No media uploaded yet.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Past Bookings -->
+  <hr>
+  <h4>📜 Past Bookings for this Show</h4>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Tickets</th>
+        <th>Total</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in bookings %}
+      <tr>
+        <td>{{ booking.user.username }}</td>
+        <td>{{ booking.number_of_tickets }}</td>
+        <td>₹{{ booking.total_price }}</td>
+        <td>{{ booking.payment_status }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4" class="text-muted text-center">No bookings yet for this show.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

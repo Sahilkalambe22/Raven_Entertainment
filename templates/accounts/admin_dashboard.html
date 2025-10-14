@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block container_class %}w-100 m-0 p-0{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{% static 'assets/css/admin_dashboard.css' %}">
+<style>
+    .sidebar-link.active {
+        background-color: #333;
+        font-weight: bold;
+        border-left: 4px solid #aa0000;
+    }
+
+    .sidebar {
+        width: 240px;
+        background-color: #111;
+        padding: 30px 20px;
+        border-right: 1px solid #333;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #666 #222;
+    }
+    .sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+        background-color: #666;
+        border-radius: 3px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+    <div class="sidebar">
+        <h2>🎭 Admin Panel</h2>
+        <a class="sidebar-link active" data-url="{% url 'admin_dashboard_content' %}">🏠 Dashboard Home</a>
+        <a class="sidebar-link" data-url="{% url 'admin_create_show' %}">📅 Create Show</a>
+        <a class="sidebar-link" data-url="{% url 'admin_view_users' %}">👤 View Users</a>
+        <a class="sidebar-link" data-url="{% url 'admin_upload_media' %}">🖼 Upload Media</a>
+        <a class="sidebar-link" data-url="{% url 'admin_view_bookings' %}">📑 View Bookings</a>
+        <a class="sidebar-link" data-url="{% url 'admin_all_shows' %}">📂 All Shows</a>
+        <a class="sidebar-link" data-url="{% url 'admin_qr_analytics' %}">📊 QR Scan Analytics</a>
+        <a class="sidebar-link" data-url="{% url 'admin_visitor_analytics' %}">📈 Visitor Analytics</a>
+        <a class="sidebar-link" data-url="{% url 'admin_marketing_qr_analytics' %}">📌 QR Campaign Analytics</a>
+        <a href="/">🌐 Homepage</a>
+        <a href="{% url 'logout' %}">🔓 Logout</a>
+    </div>
+
+    <div class="main">
+        <div class="navbar-custom">
+            <h1>Raven Entertainment</h1>
+            <span>Welcome, Admin</span>
+        </div>
+
+        <div class="main-content" id="admin-content">
+            {% include 'accounts/partials/dashboard_home.html' %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+function renderVisitorCharts() {
+    fetch("{% url 'get_visitor_data' %}")
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.district);
+            const values = data.map(item => item.count);
+            const total = values.reduce((sum, val) => sum + val, 0);
+
+            if (document.getElementById("visitorBarChart")) {
+                new Chart(document.getElementById("visitorBarChart"), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: "Visitors by District",
+                            data: values,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: true },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                color: '#fff',
+                                font: { weight: 'bold' },
+                                formatter: value => value
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Visitor Count' }},
+                            x: { title: { display: true, text: 'District' }}
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            if (document.getElementById("visitorPieChart")) {
+                new Chart(document.getElementById("visitorPieChart"), {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: [
+                                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                                '#9966FF', '#FF9F40', '#C9CBCF', '#009688', '#795548'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'right' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.raw;
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${context.label}: ${percentage}% (${value} visitors)`;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: '#fff',
+                                font: { weight: 'bold' },
+                                formatter: value => `${((value / total) * 100).toFixed(1)}%`
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+        });
+}
+
+function rebindQRFilterAndDownload() {
+    const filterBtn = document.getElementById("qrCampaignFilterBtn");
+    if (filterBtn && !filterBtn.dataset.bound) {
+        filterBtn.addEventListener("click", () => {
+            const start = document.getElementById("startDate").value;
+            const end = document.getElementById("endDate").value;
+            const city = document.getElementById("city").value;
+            const filters = {};
+            if (start) filters.start_date = start;
+            if (end) filters.end_date = end;
+            if (city) filters.city = city;
+            renderQRCampaignCharts(filters);
+        });
+        filterBtn.dataset.bound = "true";
+    }
+
+    const csvBtn = document.getElementById("downloadCSV");
+    const pdfBtn = document.getElementById("downloadPDF");
+
+    if (csvBtn && !csvBtn.dataset.bound) {
+        csvBtn.addEventListener("click", () => {
+            const data = window.qrCampaignData || [];
+            if (!data.length) return alert("No data to export.");
+            const headers = ["Identifier", "Scan Count"];
+            const csvContent = [headers.join(","), ...data.map(item => `${item.identifier},${item.count}`)].join("\n");
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "qr_campaign_data.csv";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+        csvBtn.dataset.bound = "true";
+    }
+
+    if (pdfBtn && !pdfBtn.dataset.bound) {
+        pdfBtn.addEventListener("click", async () => {
+            const data = window.qrCampaignData || [];
+            if (!data.length) return alert("No data to export.");
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text("QR Campaign Analytics", 20, 20);
+            doc.setFontSize(12);
+            doc.text("Identifier     Count", 20, 35);
+            let y = 45;
+            data.forEach(item => {
+                doc.text(`${item.identifier.padEnd(15)} ${item.count}`, 20, y);
+                y += 10;
+            });
+            doc.save("qr_campaign_data.pdf");
+        });
+        pdfBtn.dataset.bound = "true";
+    }
+}
+
+function renderQRCampaignCharts(filters = {}) {
+    let url = "{% url 'get_qr_marketing_data' %}";
+    const params = new URLSearchParams(filters).toString();
+    if (params) url += "?" + params;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            const labels = data.map(item => item.identifier);
+            const values = data.map(item => item.count);
+            const total = values.reduce((sum, val) => sum + val, 0);
+
+            const bar = document.getElementById('qrCampaignBarChart');
+            const pie = document.getElementById('qrCampaignPieChart');
+
+            if (window.qrBarChart) window.qrBarChart.destroy();
+            if (window.qrPieChart) window.qrPieChart.destroy();
+
+            if (bar) {
+                window.qrBarChart = new Chart(bar, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'QR Scans by Source',
+                            data: values,
+                            backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: true },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                color: '#fff',
+                                font: { weight: 'bold' }
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Scan Count' }},
+                            x: { title: { display: true, text: 'Source Identifier' }}
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            if (pie) {
+                window.qrPieChart = new Chart(pie, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: [
+                                '#e74c3c', '#8e44ad', '#3498db',
+                                '#27ae60', '#f1c40f', '#e67e22', '#2c3e50'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'right' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.raw;
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return `${context.label}: ${percentage}% (${value} scans)`;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: '#fff',
+                                font: { weight: 'bold' },
+                                formatter: value => `${((value / total) * 100).toFixed(1)}%`
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            window.qrCampaignData = data;
+            rebindQRFilterAndDownload();
+        });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const links = document.querySelectorAll(".sidebar-link");
+    const container = document.getElementById("admin-content");
+
+    links.forEach(link => {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+            const url = new URL(this.dataset.url, window.location.origin).href;
+
+            links.forEach(l => l.classList.remove("active"));
+            this.classList.add("active");
+
+            container.innerHTML = "<p style='color:gray;'>Loading...</p>";
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    container.innerHTML = html;
+                    if (document.getElementById("visitorBarChart")) renderVisitorCharts();
+                    if (document.getElementById("qrCampaignBarChart")) renderQRCampaignCharts();
+                })
+                .catch(err => {
+                    container.innerHTML = "<p style='color:red;'>Failed to load content.</p>";
+                    console.error("Fetch error:", err);
+                });
+        });
+    });
+});
+</script>
+{% endblock %}

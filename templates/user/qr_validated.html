@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="margin-top: 50px; text-align: center;">
+    {% if valid %}
+        {% if already_scanned %}
+            <h2 style="color: orange;">Ticket Already Scanned</h2>
+            <p>This ticket has already been used for entry.</p>
+        {% else %}
+            <h2 style="color: green;">Ticket Verified Successfully</h2>
+            <p>Welcome! This ticket is valid and marked as scanned.</p>
+        {% endif %}
+
+        <h4>Ticket Details</h4>
+        <p><strong>Ticket ID:</strong> {{ ticket.id }}</p>
+        <p><strong>Show:</strong> {{ ticket.show.name }}</p>
+        <p><strong>Seat:</strong> {{ ticket.seat_number }}</p>
+        <p><strong>Booking Time:</strong> {{ ticket.booking_date }}</p>
+
+    {% else %}
+        <h2 style="color: red;">Invalid Ticket</h2>
+        <p>This QR code does not belong to a valid ticket.</p>
+    {% endif %}
+</div>
+{% endblock %}

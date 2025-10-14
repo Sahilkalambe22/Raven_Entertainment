@@ -1,0 +1,83 @@
+{% extends "accounts/admin_dashboard.html" %}
+
+{% block content %}
+<style>
+    .create-booking-form {
+        background-color: #1a1a1a;
+        padding: 30px;
+        border-radius: 10px;
+        color: #f5f5f5;
+    }
+
+    .create-booking-form h2 {
+        font-size: 24px;
+        color: #ffcc00;
+        margin-bottom: 20px;
+    }
+
+    .create-booking-form label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    .create-booking-form input,
+    .create-booking-form select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        background-color: #2a2a2a;
+        color: #f5f5f5;
+        border: 1px solid #444;
+        border-radius: 5px;
+    }
+
+    .create-booking-form button {
+        margin-top: 25px;
+        background-color: #00aa00;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .create-booking-form button:hover {
+        background-color: #00cc00;
+    }
+</style>
+
+<div class="create-booking-form">
+    <h2 class="create-booking-title">🎟 Create Booking</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>User:</label>
+        <select name="user" required>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Show:</label>
+        <select name="show" required>
+            {% for show in shows %}
+                <option value="{{ show.id }}">{{ show.name }} - {{ show.date }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Number of Tickets:</label>
+        <input type="number" name="tickets" min="1" required>
+
+        <label>Payment Status:</label>
+        <select name="status" required>
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+        </select>
+
+        <button type="submit">➕ Create Booking</button>
+    </form>
+</div>
+{% endblock %}

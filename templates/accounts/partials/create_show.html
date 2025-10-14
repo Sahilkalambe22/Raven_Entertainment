@@ -1,0 +1,47 @@
+<div class="create-show-form text-white">
+  <h2 class="create-show-title text-warning">🎭 Create a New Show</h2>
+  <form method="POST" action="{% url 'admin_create_show' %}" enctype="multipart/form-data">  
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="form-group mb-3">
+        <label class="form-label" for="id_name">Name:</label>
+        {{ form.name }}
+    </div>
+
+    <div class="form-group mb-3">
+        <label class="form-label" for="id_date">Date:</label>
+        {{ form.date }}
+    </div>
+
+    <div class="form-group mb-3">
+        <label class="form-label" for="id_time">Time:</label>
+        {{ form.time }}
+    </div>
+
+    <div class="form-group mb-3">
+        <label class="form-label" for="id_seat_price">Seat Price:</label>
+        {{ form.seat_price }}
+    </div>
+
+    <div class="form-group mb-3">
+        <label class="form-label" for="id_thumbnail">Thumbnail:</label>
+        {{ form.thumbnail }}
+    </div>
+
+    <div class="form-group mb-3">
+    <label class="form-label" for="id_poster">Poster:</label>
+    {{ form.poster }}
+    </div>
+
+    <div class="form-group mb-4">
+        <label class="form-label" for="id_include_balcony">Include Balcony:</label>
+        {{ form.include_balcony }}
+    </div>
+    
+
+    <button type="submit" class="btn btn-success">➕ Create Show</button>
+</form>
+
+</div>
+  

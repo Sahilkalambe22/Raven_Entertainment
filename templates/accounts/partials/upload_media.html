@@ -1,0 +1,26 @@
+{% load static %}
+<div class="admin-section">
+  <h2 class="section-heading">🖼 Upload Media</h2>
+
+  <form method="post" enctype="multipart/form-data" class="upload-form">
+    {% csrf_token %}
+    
+    <div class="form-row">
+      <label for="show_id">🎭 Select Show:</label>
+      <select name="show_id" id="show_id" class="input-field">
+        {% for show in shows %}
+          <option value="{{ show.id }}">{{ show.name }} ({{ show.date }})</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="media">📂 Choose File:</label>
+      <input type="file" name="media" class="input-field" required>
+    </div>
+
+    <button type="submit" class="btn-upload">📤 Upload</button>
+  </form>
+
+  <p class="upload-note">ℹ️ Media will be linked to the show.
+</div>

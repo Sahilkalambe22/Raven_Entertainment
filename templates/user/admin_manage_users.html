@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h3>🛠 Manage User Roles</h3>
+
+  <form method="post">
+    {% csrf_token %}
+    <table class="table table-bordered mt-4">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Current Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <select name="user_type_{{ user.id }}" class="form-select">
+              <option value="User" {% if user.user_type == 'User' %}selected{% endif %}>User</option>
+              <option value="Admin" {% if user.user_type == 'Admin' %}selected{% endif %}>Admin</option>
+            </select>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  .admin-user-table h3 {
+    color: #ffcc00;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .admin-user-table .table {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+  }
+
+  .admin-user-table .table thead {
+    background-color: #333;
+    color: #ffcc00;
+  }
+
+  .admin-user-table .form-select {
+    background-color: #2c2c2c;
+    color: #fff;
+    border: 1px solid #444;
+  }
+
+  .admin-user-table .form-select:focus {
+    border-color: #ffcc00;
+    box-shadow: 0 0 5px #ffcc00;
+  }
+
+  .admin-user-table .btn-success {
+    background-color: #28a745;
+    border: none;
+    font-size: 1rem;
+    padding: 10px 20px;
+    display: block;
+    margin: 20px auto 0 auto;
+  }
+
+  .admin-user-table .btn-success:hover {
+    background-color: #218838;
+  }
+</style>
+
+<div class="container mt-5 admin-user-table">
+  <h3>🛠 Manage User Roles</h3>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="table-responsive">
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr>
+            <th>👤 Username</th>
+            <th>📧 Email</th>
+            <th>🧾 Current Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <select name="user_type_{{ user.id }}" class="form-select">
+                <option value="User" {% if user.user_type == 'User' %}selected{% endif %}>User</option>
+                <option value="Admin" {% if user.user_type == 'Admin' %}selected{% endif %}>Admin</option>
+              </select>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <button type="submit" class="btn btn-success">💾 Save Changes</button>
+  </form>
+</div>
+{% endblock %}
+
+    </table>
+    <button type="submit" class="btn btn-success">💾 Save Changes</button>
+  </form>
+</div>
+{% endblock %}

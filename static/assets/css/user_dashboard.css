@@ -1,0 +1,20 @@
+/* static/css/user_dashboard.css */
+
+body {
+    background-color: #f7f9fc;
+}
+
+.card-header {
+    background-color: #1e293b;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.table th {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.btn-primary, .btn-success {
+    border-radius: 0.25rem;
+}

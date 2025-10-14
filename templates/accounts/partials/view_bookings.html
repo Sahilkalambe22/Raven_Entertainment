@@ -1,0 +1,26 @@
+<table class="table-dark-custom">
+  <thead>
+    <tr>
+      <th>Show</th>
+      <th>Date of the show</th>
+      <th>Tickets</th>
+      <th>Price per Ticket</th>
+      <th>Total Price</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for show in shows %}
+      <tr>
+        <td>{{ show.name }}</td>
+        <td>{{ show.date }}</td>
+        <td>{{ show.total_tickets }}</td>
+        <td>₹{{ show.seat_price }}</td> 
+        <td>₹{{ show.total_price }}</td>
+        <td>
+          <a href="{% url 'admin_show_media' show.id %}" class="btn btn-outline-info btn-sm">View</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

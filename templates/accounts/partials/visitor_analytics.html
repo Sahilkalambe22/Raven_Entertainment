@@ -1,0 +1,74 @@
+{% load static %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📊 Visitor Analytics by District</h2>
+
+    <div class="row">
+        <!-- Bar Chart -->
+        <div class="col-md-6 mb-4">
+            <canvas id="visitorBarChart" height="300"></canvas>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-md-6 mb-4">
+            <canvas id="visitorPieChart" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+function renderVisitorCharts() {
+    fetch("{% url 'get_visitor_data' %}")
+      .then(response => response.json())
+      .then(data => {
+        const labels = data.map(item => item.district);
+        const values = data.map(item => item.count);
+
+        // Bar Chart
+        new Chart(document.getElementById('visitorBarChart'), {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '🌍 Visitors by District',
+              data: values,
+              backgroundColor: 'rgba(54, 162, 235, 0.6)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false }, tooltip: { enabled: true } },
+            scales: {
+              y: { beginAtZero: true, title: { display: true, text: 'Visitor Count' } },
+              x: { title: { display: true, text: 'District' } }
+            }
+          }
+        });
+
+        // Pie Chart
+        new Chart(document.getElementById('visitorPieChart'), {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Visitors Share',
+              data: values,
+              backgroundColor: [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                '#9966FF', '#FF9F40', '#C9CBCF', '#009688', '#795548'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: { responsive: true, plugins: { legend: { position: 'right' }, tooltip: { enabled: true } } }
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", renderVisitorCharts);
+</script>

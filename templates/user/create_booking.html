@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* (Your same CSS styles remain unchanged) */
+  body {
+    background-color: #121212;
+    color: #f5f5f5;
+  }
+  .stage {
+    width: 60%;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #2c2c2c;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000;
+    font-size: 1.2rem;
+  }
+  .zone-title {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+    font-weight: 700;
+    color: #ffcc00;
+  }
+  .seat-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  .seat-container::-webkit-scrollbar { display: none; }
+  .seat-container { -ms-overflow-style: none; scrollbar-width: none; }
+  .seat-row { display: flex; flex-wrap: nowrap; justify-content: flex-start; align-items: center; margin-bottom: 8px; }
+  .row-label { margin-right: 10px; font-weight: bold; width: 30px; text-align: right; color: #ccc; flex: 0 0 auto; }
+  .seat-svg { width: 40px; height: 40px; cursor: pointer; transition: transform 0.2s; margin: 3px; flex: 0 0 auto; }
+  .seat-svg:hover { transform: scale(1.1); }
+  .available-seat rect { fill: #28a745; stroke: #218838; stroke-width: 2; }
+  .booked-seat rect { fill: #dc3545; stroke: #bd2130; stroke-width: 2; opacity: 0.5; cursor: not-allowed; }
+  .selected-seat rect { fill: #ffc107; stroke: #e0a800; stroke-width: 2; }
+  .seat-label { fill: white; font-size: 10px; text-anchor: middle; dominant-baseline: middle; font-weight: bold; }
+  @media (max-width: 480px) { .seat-label { font-size: 6px; } }
+  .selected-info { text-align: center; margin-top: 30px; font-size: 1.1rem; color: #ddd; }
+  .selected-info span { color: #4db8ff; font-weight: bold; }
+  .btn-success { background-color: #28a745; font-size: 1.1rem; padding: 10px 20px; }
+  .recommended-seat:not(.selected-seat):not(.booked-seat) rect {
+    filter: drop-shadow(0 0 2px #00f7ff) drop-shadow(0 0 4px #00f7ff) drop-shadow(0 0 6px #00f7ff);
+    stroke: #00f7ff;
+    stroke-width: 2.5;
+  }
+</style>
+
+<div class="text-center my-5">
+  <h2>🎟️ Book Your Seats for <span class="text-warning">"{{ show.name }}"</span></h2>
+  <p class="text-secondary">
+    Date: {{ show.date }} | 
+    Time: {{ show.time|time:"g:i A" }} | 
+    ₹{{ show.seat_price }} per ticket
+  </p>
+</div>
+
+<div class="stage">🎬 STAGE</div>
+
+<form method="post">
+  {% csrf_token %}
+
+  <!-- STALL -->
+  <div class="zone-title">🪑 STALL</div>
+  <div class="seat-container">
+    {% for row, seats in ground_rows.items %}
+      <div class="seat-row">
+        <div class="row-label">{{ row }}</div>
+        {% for seat in seats %}
+          <svg class="seat-svg 
+            {% if seat.is_booked %}booked-seat{% else %}available-seat{% endif %}
+            {% if seat in recommended_seats %} recommended-seat{% endif %}"
+            data-seat-id="{{ seat.id }}"
+            data-seat-number="{{ seat.seat_number }}"
+            onclick="toggleSeat(this)">
+            <rect x="4" y="4" width="32" height="32" rx="6" ry="6"></rect>
+            <rect x="1" y="12" width="6" height="16" rx="2" ry="2"></rect>
+            <rect x="33" y="12" width="6" height="16" rx="2" ry="2"></rect>
+            <text x="20" y="22" class="seat-label">{{ seat.seat_number|slice:"1:" }}</text>
+          </svg>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- BALCONY -->
+  {% if balcony_rows %}
+    <div class="zone-title">🎭 BALCONY</div>
+    <div class="seat-container">
+      {% for row, seats in balcony_rows.items %}
+        <div class="seat-row">
+          <div class="row-label">{{ row }}</div>
+          {% for seat in seats %}
+            <svg class="seat-svg 
+              {% if seat.is_booked %}booked-seat{% else %}available-seat{% endif %}"
+              data-seat-id="{{ seat.id }}"
+              data-seat-number="{{ seat.seat_number }}"
+              onclick="toggleSeat(this)">
+              <rect x="4" y="4" width="32" height="32" rx="6" ry="6"></rect>
+              <rect x="1" y="12" width="6" height="16" rx="2" ry="2"></rect>
+              <rect x="33" y="12" width="6" height="16" rx="2" ry="2"></rect>
+              <text x="20" y="22" class="seat-label">{{ seat.seat_number|slice:"1:" }}</text>
+            </svg>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <input type="hidden" name="selected_seats" id="selectedSeatsInput">
+
+  <div class="selected-info">
+    Total Payable: ₹<span id="totalPrice">0</span><br>
+    Selected Seats: <span id="selectedSeatDisplay">None</span>
+  </div>
+
+  <div class="text-center mt-4">
+    <button type="submit" class="btn btn-success">✅ Confirm Booking</button>
+  </div>
+</form>
+
+<script>
+  const pricePerSeat = parseFloat("{{ show.seat_price|floatformat:2 }}");
+  const selectedSeatIDs = new Set();
+  const seatDisplayMap = new Map();
+
+  // Toggle seat locally + notify WebSocket
+  function toggleSeat(el) {
+    if (el.classList.contains("booked-seat")) return;
+
+    const seatId = el.dataset.seatId;
+    const seatNumber = el.dataset.seatNumber;
+
+    if (el.classList.contains("selected-seat")) {
+      el.classList.remove("selected-seat");
+      selectedSeatIDs.delete(seatId);
+      seatDisplayMap.delete(seatId);
+      socket.send(JSON.stringify({"seat_id": seatId, "action": "unbook"}));
+    } else {
+      el.classList.add("selected-seat");
+      selectedSeatIDs.add(seatId);
+      seatDisplayMap.set(seatId, seatNumber);
+      socket.send(JSON.stringify({"seat_id": seatId, "action": "book"}));
+    }
+
+    document.getElementById("selectedSeatsInput").value = Array.from(selectedSeatIDs).join(",");
+    document.getElementById("selectedSeatDisplay").innerText = Array.from(seatDisplayMap.values()).join(", ") || "None";
+    document.getElementById("totalPrice").innerText = (seatDisplayMap.size * pricePerSeat).toFixed(2);
+  }
+
+  // WebSocket connection
+  const showId = "{{ show.id }}";
+  const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+  const socket = new WebSocket(`${wsScheme}://${window.location.host}/ws/show/${showId}/`);
+
+  socket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    const seatId = data.seat_id;
+    const action = data.action;
+
+    const seatElement = document.querySelector(`[data-seat-id='${seatId}']`);
+    if (seatElement) {
+      if (action === "book") {
+        seatElement.classList.remove("available-seat", "selected-seat");
+        seatElement.classList.add("booked-seat");
+      } else if (action === "unbook") {
+        seatElement.classList.remove("booked-seat");
+        seatElement.classList.add("available-seat");
+      }
+    }
+  };
+</script>
+{% endblock %}
