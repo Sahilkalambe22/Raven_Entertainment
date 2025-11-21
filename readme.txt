@@ -40,20 +40,6 @@ and an **admin interface** for event management, ticket QR analysis, finances, a
 
 ---
 
-## 📸 Screenshots
-
-> Replace these placeholders with your actual project screenshots from the `/screenshots` folder.
-
-**User Interface**
-![User Interface](screenshots/user-ui.png)
-
-**Admin Dashboard**
-![Admin Interface](screenshots/admin-ui.png)
-
-**Seat Booking System**
-![Seat Booking](screenshots/seat-booking.png)
-
----
 
 ## ⚙️ Installation & Setup
 
